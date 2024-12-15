@@ -72,5 +72,8 @@
             "error_handler": "\\Ibexa\\Contracts\\Core\\MVC\\Symfony\\ErrorHandler\\Php82HideDeprecationsErrorHandler"
         }
     },
-    "name": "ibexa/oss-skeleton"
+    "name": "ibexa/oss-skeleton",
+    "require-dev": {
+        "symfony/debug-bundle": "5.4.*"
+    }
 }
