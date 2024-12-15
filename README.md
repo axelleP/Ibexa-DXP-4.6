@@ -22,7 +22,7 @@ Doc installattion LAMP : https://www.digitalocean.com/community/tutorials/how-to
     - `sudo a2enmod setenvif`
     - `sudo a2enmod expires`
 - `sudo service apache2 restart` : relancer Apache
-- aller sur http://localhost pour vérifier le fonctionnement du serveur Apache 
+- aller sur http://localhost:8000/ pour vérifier le fonctionnement du serveur Apache 
 
 
 **MySQL :**   
@@ -82,10 +82,10 @@ Doc : https://doc.ibexa.co/en/latest/search/search_engines/solr_search_engine/in
 - si besoin augmenter la limite de fichiers ouverts à 65000 :
 	- `sudo nano /etc/security/limits.conf`
 	- ajouter à la fin :    
-		- *               soft    nofile          65000
-		- *               hard    nofile          65000
-		- *               soft    nproc           65000
-		- *               hard    nproc           65000
+		- \*               soft    nofile          65000
+		- \*               hard    nofile          65000
+		- \*               soft    nproc           65000
+		- \*               hard    nproc           65000
 	- si WSL : `wsl --shutdown` et relancer sa console Ubuntu
 	- vérifier la modification `ulimit -n`
 - vérifier que solr appartient bien à notre user avec les bons droits
@@ -162,8 +162,9 @@ Docs :
 ### 2. Gestion du contenu      
 Doc : https://doc.ibexa.co/en/latest/content_management/content_model/     
 
-- content type : permet de simuler une classe PHP (champs, héritage, validation ...) soit par une interface graphique soit par du code
-- content item : c'est une instance d'un content type
+- content type : semblable à une classe PHP (champs, héritage, validation ...). Géré soit par une interface graphique soit par du code
+    - fields : représente les champs du content type (propriétés d'une classe PHP)
+- content item : c'est une instance d'un content type (objet)
     - content information (métadonnées) : ensembles d'informations pour décrire un content item => id, name, ownerId, publishedDate, version, status (brouillon, publié, archivé), ...
     - fields : contient les valeurs des champs
 
@@ -173,3 +174,54 @@ Note :
 
 ### 3. Solr    
 L'utilisateur utilise un moteur de recherche comme Solr qui permet des recherches rapides et performantes sur les contenus (Content Items) du site.
+
+## 6) Interface Admin
+### 1. Connexion     
+Aller sur l'url : http://127.0.0.1:8000/admin et rentrer les identifiants par défaut de la doc. : admin et publish.     
+
+### 2. Création d'un type de contenu
+- aller sur le menu "Content type", sélectionner "Content", cliquer sur "+ Create"
+- remplir les informations générales du nouveau Content type : nom, description ...
+- ajouter des fields au Content type : type, nom, ...
+- enregistrer
+
+Dans la bdd c'est stocké dans ezcontentclass_attribute.     
+
+### 3. Création de contenu
+- menu Content structure, cliquer sur "+ Create Content", sélectionner "Folder", le nommer "All contentName" puis le publier
+- depuis le nouveau dossier, cliquer sur "+ Create content", sélectionner le Content type précedemment crée, remplir les fields, publier
+
+Dans la bdd c'est stocké dans ezcontentobject_attribute.     
+
+### 4. Complément
+**Prévisualiser l'affichage d'un content**      
+Aller dans le menu "Content Structure", choisir un contenu et cliquer sur "Preview".    
+
+**Trouver l'url de son contenu**     
+Aller dans le menu "Content Structure", choisir le contenu et cliquer sur URL.   
+
+**Autoriser la lecture des medias**     
+Cela permet d'afficher les images sur le site.      
+- cliquer sur l'icône d'engrenage du panneau d'admin
+- cliquer sur Roles
+- cliquer sur Anonymous
+- éditer la ligne Content Read
+- dans Section ajouter Media    
+
+## 7) Frontend
+### 1. Association template et content type
+Doc : https://doc.ibexa.co/en/latest/tutorials/beginner_tutorial/3_customize_the_front_page/#content-rendering-configuration     
+
+- dans ibexa.yaml on définit une section content_view qui contient les vues du site
+    - chaque vue est associée à des paramètres : template, match (permet la correspondance avec le contenu), ...
+- `php bin/console cache:clear`
+
+### 2. Affichage content item dans un template
+Dans Twig on peut appeler :
+    - un field simple : `{{ content.name }}`
+    - un field complexe : `{{ ibexa_render_field(content, 'starting_point', {'parameters': { 'width': '100%', height: '200px', 'showMap': true, 'showInfo': false }}) }}`
+
+### 3. Query type
+Les objets QueryType sont utilisés pour limiter et trier les résultats des requêtes d'éléments de contenu.       
+On crée une classe (ex. RideQueryType) depuis /src/QueryType et on ajoute sa configuration dans ibexa.yaml.     
+
