@@ -1,11 +1,42 @@
 # <h1 align="center">👨‍💻 Ibexa DXP 4.6 👩‍💻</h1>   
 
-Ce projet utilise Ibexa DXP, qui est sous la licence GPL-2.0.     
+Ce projet utilise Ibexa DXP, qui est sous la licence GPL-2.0. 
 
 <details>
-    <summary><h2>1) Installation environnement Linux</h2></summary>
+  <summary><h2>Exemples de code</h2></summary>
 
-Doc installattion LAMP : https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu          
+- configuration de l'affichage du contenu : [views.yaml](config/packages/views.yaml)
+- contrôleur personnalisé : [RideController.php](src/Controller/RideController.php)
+- vue - full : [home_page.html.twig](templates/full/home_page.html.twig)
+- vue - line : [rides.html.twig](templates/line/rides.html.twig)
+- query type : [RideQueryType.php](src/QueryType/RideQueryType.php)
+</details>
+
+<details>
+  <summary><h2>Versions utilisées</h2></summary>
+
+Env. requis : https://doc.ibexa.co/en/latest/getting_started/requirements/#operating-system     
+
+- Ubuntu : 24.04.1 (`lsb_release -a`)
+- PHP : 8.3.6 (`php --version`)
+- Apache : 2.4.58 (`apache2 -v`)
+- MySQL : 8.0.40 (`mysql --version`)
+- Node : 20.18.1 (`node -v`)
+- Npm : 10.8.2 (`npm -v`)
+- Yarn : 1.22.22 (`yarn --version`)
+- Git : 2.43.0 (`git --version`)
+- Composer : 2.7.1 (`composer --version`)
+- Ibexa DXP : 4.6.14 (voir ibexa/oss dans composer.json)
+- Symfony 5.4.48 (voir vendor/symfony/http-kernel/Kernel.php)
+</details>
+
+<details>
+  <summary><h2>Documentation</h2></summary>
+
+<details>
+    <summary><h3>1) Installation environnement Linux</h3></summary>
+
+Doc installation LAMP : https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu          
 <br>
 
 **MAJ packages :** `sudo apt update && sudo apt upgrade && sudo do-release-upgrade`
@@ -61,7 +92,7 @@ Doc : https://classic.yarnpkg.com/en/docs/install/#debian-stable
 Doc : https://code.visualstudio.com/docs/setup/linux       
 - `sudo snap install code --classic`
 
-**Google Chrome (hors WSL) :**
+**Google Chrome (hors WSL) :**     
 Depuis /opt :    
 - `wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb`
 - `sudo dpkg -i google-chrome-stable_current_amd64.deb`
@@ -88,34 +119,23 @@ Doc : https://doc.ibexa.co/en/latest/search/search_engines/solr_search_engine/in
 		- \*               hard    nproc           65000
 	- si WSL : `wsl --shutdown` et relancer sa console Ubuntu
 	- vérifier la modification `ulimit -n`
-- vérifier que solr appartient bien à notre user avec les bons droits
+- vérifier que Solr appartient bien à notre user avec les bons droits
 - démarrer Solr : 
     - `bin/solr -s ibexa`
     - `bin/solr create_core -c collection1 -d server/ibexa/template`
 - Solr est accessible : http://localhost:8983/solr/#/
 </details>
 
-## 2) Installation projet Ibexa DXP
+<details>
+    <summary><h3>2) Installation projet Ibexa DXP</h3></summary>
+
 Doc : https://doc.ibexa.co/en/latest/getting_started/install_ibexa_dxp/    
 - `composer create-project ibexa/oss-skeleton ibexa_website`
+</details>
 
+<details>
+    <summary><h3>3) Configurer et lancer son projet</h3></summary>
 
-## 3) Versions utilisées
-Env. requis : https://doc.ibexa.co/en/latest/getting_started/requirements/#operating-system     
-
-- Ubuntu : 24.04.1 (`lsb_release -a`)
-- PHP : 8.3.6 (`php --version`)
-- Apache : 2.4.58 (`apache2 -v`)
-- MySQL : 8.0.40 (`mysql --version`)
-- Node : 20.18.1 (`node -v`)
-- Npm : 10.8.2 (`npm -v`)
-- Yarn : 1.22.22 (`yarn --version`)
-- Git : 2.43.0 (`git --version`)
-- Composer : 2.7.1 (`composer --version`)
-- Ibexa DXP : 4.6.14 (voir ibexa/oss dans composer.json)
-
-
-## 4) Configurer et lancer son projet
 <details>
     <summary><h4>Si on utilise WSL</h4></summary>
 
@@ -127,11 +147,12 @@ Env. requis : https://doc.ibexa.co/en/latest/getting_started/requirements/#opera
 </details>
 
 **Configurer son projet Ibexa :**    
-- `composer install` => install et update déclenchent l'exécution d'autres scripts (ex. : `yarn install`). Voir la section scripts de composer.json
+- `composer install` => install et update déclenchent l'exécution d'autres scripts (ex. : `yarn install`).      
+Voir la section scripts de composer.json
 - configurer son .env :
     - DATABASE_URL
     - APP_SECRET
-- installer Solr si on l'a choisit comme moteur de recherche : voir la partie "Installation environnement Linux"
+- installer Solr si on l'a choisit comme moteur de recherche : voir la partie "1) Installation environnement Linux"
 - `php bin/console ibexa:install` : créer la base de données et les tables systèmes
 - `php bin/console ibexa:graphql:generate-schema` : créer les fichiers de schéma GraphQL
 - `composer require --dev symfony/debug-bundle` : utile pour le mode dev
@@ -141,10 +162,32 @@ Env. requis : https://doc.ibexa.co/en/latest/getting_started/requirements/#opera
 **Lancer son projet :**    
 - `bin/solr start` : lancer Solr depuis /opt/solr-7.7.2
 - `php -S 127.0.0.1:8000 -t public` : site accessible sous http://127.0.0.1:8000
+</details>
 
-## 5) Concepts
-### 1. GraphQL
-Permet de récupérer et gérer des données (sources possibles : bdd, api, fichier, ...) via un système de requêtes API s'appuyant sur un schéma. 
+<details>
+    <summary><h3>4) Concepts</h3></summary>
+
+#### 1. Gestion du contenu      
+Doc : https://doc.ibexa.co/en/latest/content_management/content_model/     
+
+- content type : semblable à une classe PHP (champs, héritage, validation ...). Géré soit par une interface graphique soit par du code
+    - fields : représente les champs du content type (propriétés d'une classe PHP)
+- content item : c'est une instance d'un content type (objet)
+    - content information (métadonnées) : ensembles d'informations pour décrire un content item => id, name, ownerId, publishedDate, version, status (brouillon, publié, archivé), ...
+    - fields : contient les valeurs des champs
+
+Note :      
+- Content gère l'abstraction des données de contenu (modèles et objets)    
+- Doctrine gère le stockage de ces objets dans la base de données relationnelle
+
+#### 2. API
+Ibexa DXP fournit des API pour récupérer et gérer le contenu.     
+On peut choisir d'utiliser API PHP, API REST ou GraphQL.     
+
+<details>
+    <summary><h4>Explication GraphQL</h4></summary>
+
+Permet de récupérer et gérer des données (sources possibles : bdd, api, fichier, ...) via un système de requêtes API s'appuyant sur un schéma.     
 
 Scénario :
 - le client fait une requête GraphQL
@@ -158,43 +201,44 @@ Docs :
 - queries - récupérer des données : https://graphql.org/learn/queries/
 - mutations - modifier des données : https://graphql.org/learn/mutations/
 - subscriptions - s'abonner aux mises à jour de données : https://graphql.org/learn/subscriptions/
+</details>
 
-### 2. Gestion du contenu      
-Doc : https://doc.ibexa.co/en/latest/content_management/content_model/     
-
-- content type : semblable à une classe PHP (champs, héritage, validation ...). Géré soit par une interface graphique soit par du code
-    - fields : représente les champs du content type (propriétés d'une classe PHP)
-- content item : c'est une instance d'un content type (objet)
-    - content information (métadonnées) : ensembles d'informations pour décrire un content item => id, name, ownerId, publishedDate, version, status (brouillon, publié, archivé), ...
-    - fields : contient les valeurs des champs
-
-Note :      
-- Content gère l'abstraction des données de contenu (modèles et objets)    
-- Doctrine gère le stockage de ces objets dans la base de données relationnelle
-
-### 3. Solr    
+#### 3. Solr    
 L'utilisateur utilise un moteur de recherche comme Solr qui permet des recherches rapides et performantes sur les contenus (Content Items) du site.
+</details>
 
-## 6) Interface Admin
-### 1. Connexion     
+<details>
+    <summary><h3>5) Interface Admin</h3></summary>
+
+#### 1. Connexion     
 Aller sur l'url : http://127.0.0.1:8000/admin et rentrer les identifiants par défaut de la doc. : admin et publish.     
 
-### 2. Création d'un type de contenu
+#### 2. Création d'un type de contenu
+Doc : https://doc.ibexa.co/en/latest/administration/content_organization/content_types/     
+
 - aller sur le menu "Content type", sélectionner "Content", cliquer sur "+ Create"
 - remplir les informations générales du nouveau Content type : nom, description ...
-- ajouter des fields au Content type : type, nom, ...
+- ajouter des fields au Content type (ex. : type, nom, ...)
 - enregistrer
 
-Dans la bdd c'est stocké dans ezcontentclass_attribute.     
+Note : Dans la bdd c'est stocké dans ezcontentclass_attribute.     
 
-### 3. Création de contenu
-- menu Content structure, cliquer sur "+ Create Content", sélectionner "Folder", le nommer "All contentName" puis le publier
+#### 3. Création de contenu
+- menu "Content structure", cliquer sur "+ Create Content", sélectionner "Folder", le nommer "All contentName" puis le publier
 - depuis le nouveau dossier, cliquer sur "+ Create content", sélectionner le Content type précedemment crée, remplir les fields, publier
 
-Dans la bdd c'est stocké dans ezcontentobject_attribute.     
+Note : Dans la bdd c'est stocké dans ezcontentobject_attribute.     
 
-### 4. Complément
-**Prévisualiser l'affichage d'un content**      
+#### 4. Mettre en relation 2 content type
+- éditer un content type
+- ajouter un field de type "Content relation (single)" ou "Content relation (multiple)" selon le besoin
+- cocher "Content location"
+- ajouter dans "Allowed content types" le content type concerné
+
+Note : Dans la bdd c'est stocké dans ezcontentobject_attribute. 
+
+#### 5. Complément
+**Prévisualiser l'affichage d'un content sur le site**      
 Aller dans le menu "Content Structure", choisir un contenu et cliquer sur "Preview".    
 
 **Trouver l'url de son contenu**     
@@ -203,25 +247,42 @@ Aller dans le menu "Content Structure", choisir le contenu et cliquer sur URL.
 **Autoriser la lecture des medias**     
 Cela permet d'afficher les images sur le site.      
 - cliquer sur l'icône d'engrenage du panneau d'admin
-- cliquer sur Roles
-- cliquer sur Anonymous
+- cliquer sur "Roles" puis "Anonymous"
 - éditer la ligne Content Read
-- dans Section ajouter Media    
+- dans Section ajouter "Media"    
+</details>
 
-## 7) Frontend
-### 1. Association template et content type
-Doc : https://doc.ibexa.co/en/latest/tutorials/beginner_tutorial/3_customize_the_front_page/#content-rendering-configuration     
+<details>
+    <summary><h3>6) Côté Symfony</h3></summary>
+
+#### 1. Association template et content type
+Doc : https://doc.ibexa.co/en/latest/templating/templates/template_configuration/#view-rules-and-matching     
 
 - dans ibexa.yaml on définit une section content_view qui contient les vues du site
-    - chaque vue est associée à des paramètres : template, match (permet la correspondance avec le contenu), ...
-- `php bin/console cache:clear`
+    - chaque vue est paramétrable : template, match (permet la correspondance avec le contenu), ...
+- `php bin/console cache:clear` suite à la MAJ de la config
 
-### 2. Affichage content item dans un template
+#### 2. Affichage du contenu dans un template
+Doc : https://doc.ibexa.co/en/latest/templating/render_content/render_content/      
+
 Dans Twig on peut appeler :
-    - un field simple : `{{ content.name }}`
-    - un field complexe : `{{ ibexa_render_field(content, 'starting_point', {'parameters': { 'width': '100%', height: '200px', 'showMap': true, 'showInfo': false }}) }}`
+- les informations générales du content : `{{ content.name }}`
+- un field du content : `{{ ibexa_render_field(content, 'starting_point', {'parameters': { 'width': '100%', height: '200px', 'showMap': true, 'showInfo': false }}) }}`
 
-### 3. Query type
+#### 3. Query type
 Les objets QueryType sont utilisés pour limiter et trier les résultats des requêtes d'éléments de contenu.       
-On crée une classe (ex. RideQueryType) depuis /src/QueryType et on ajoute sa configuration dans ibexa.yaml.     
+On crée une classe (ex. RideQueryType) dans /src/QueryType et on ajoute sa configuration dans ibexa.yaml.  
 
+#### 4. Gérer les images
+On utilise le fichier config/packages/image_variations.yaml pour ajouter une configuration d'images.      
+Puis on applique la configuration dans un template Twig en l'appelant dans parameters.     
+Ex. côté Twig: 
+```
+{{ ibexa_render_field(content, 'photo', {
+    'parameters': {
+        'alias': 'ride_list'
+    }
+}) }}
+```
+</details>   
+</details>

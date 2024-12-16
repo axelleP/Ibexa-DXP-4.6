@@ -13,6 +13,7 @@
             </thead>
             <tbody>
             {% for ride in rides.currentPageResults %}
+                {# appelle le contrôleur ibexa_content et sa méthode viewAction avec les paramètres location et viewType #}
                 {{ render( controller( 'ibexa_content::viewAction', { 'location': ride.valueObject, 'viewType': 'line' } )) }}
             {% endfor %}
             </tbody>

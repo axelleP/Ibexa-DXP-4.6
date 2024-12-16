@@ -18,8 +18,8 @@ class RideQueryType implements QueryType
         return new LocationQuery([
             'filter' => new Criterion\LogicalAnd(
                 [
-                    new Criterion\Visibility(Criterion\Visibility::VISIBLE),
-                    new Criterion\ContentTypeIdentifier(['ride']),
+                    new Criterion\Visibility(Criterion\Visibility::VISIBLE),//contenu visible
+                    new Criterion\ContentTypeIdentifier(['ride']),//contenu de type ride
                 ]
             )
         ]);
