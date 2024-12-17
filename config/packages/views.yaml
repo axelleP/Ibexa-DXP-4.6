@@ -1,4 +1,7 @@
 ibexa:
+    ui:
+        translations:
+            enabled: true
     system:
         site:
             content_view:
@@ -36,3 +39,7 @@ ibexa:
                         template: line/landmark.html.twig
                         match:
                             Identifier\ContentType: landmark
+            user_registration:
+                templates:
+                    form: user/registration_form.html.twig
+                    confirmation: user/registration_confirmation.html.twig

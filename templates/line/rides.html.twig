@@ -9,7 +9,6 @@
                 Si le field a bien une valeur on l'affiche.
                 Dans parameters, ride_list est une config dans config/packages/image_variations.yaml pour gérer l'affichage de l'image
             #}
-
             {% if not ibexa_field_is_empty( content, 'photo' ) %}
                 {{ ibexa_render_field(content, 'photo', {
                     'parameters': {

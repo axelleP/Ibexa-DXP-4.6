@@ -13,6 +13,17 @@ Ce projet utilise Ibexa DXP, qui est sous la licence GPL-2.0.
 </details>
 
 <details>
+  <summary><h2>Images du site</h2></summary>
+
+### <ins>Accueil</ins>
+![home](https://github.com/user-attachments/assets/86293c42-e604-4f91-85a9-c0bc35e650eb)    
+### <ins>Vue d'une balade</ins>     
+![ride](https://github.com/user-attachments/assets/69a2f9b2-09ac-4779-8610-f28f98db0724)      
+### <ins>Vue d'un point d'intérêt</ins>     
+![landmark](https://github.com/user-attachments/assets/6cc44d71-0b36-4d56-a47e-bbf9af7c4662)
+</details>
+
+<details>
   <summary><h2>Versions utilisées</h2></summary>
 
 Env. requis : https://doc.ibexa.co/en/latest/getting_started/requirements/#operating-system     
@@ -157,7 +168,8 @@ Voir la section scripts de composer.json
 - `php bin/console ibexa:graphql:generate-schema` : créer les fichiers de schéma GraphQL
 - `composer require --dev symfony/debug-bundle` : utile pour le mode dev
 - `yarn encore dev` : compiler les assets
-- `composer run post-install-cmd` : nettoyer l'env. après l'installation de dépendances
+- `composer run post-install-cmd` : nettoyer l'env. après l'installation de dépendances       
+- dans ibexa.yaml modifier si besoin : locale_fallback, site->languages
 
 **Lancer son projet :**    
 - `bin/solr start` : lancer Solr depuis /opt/solr-7.7.2
@@ -225,9 +237,9 @@ Note : Dans la bdd c'est stocké dans ezcontentclass_attribute.
 
 #### 3. Création de contenu
 - menu "Content structure", cliquer sur "+ Create Content", sélectionner "Folder", le nommer "All contentName" puis le publier
-- depuis le nouveau dossier, cliquer sur "+ Create content", sélectionner le Content type précedemment crée, remplir les fields, publier
+- depuis le nouveau dossier, cliquer sur "+ Create content", sélectionner le Content type précedemment crée, remplir les fields, publier    
 
-Note : Dans la bdd c'est stocké dans ezcontentobject_attribute.     
+Note : Dans la bdd c'est stocké dans ezcontentobject_attribute. 
 
 #### 4. Mettre en relation 2 content type
 - éditer un content type
@@ -235,10 +247,38 @@ Note : Dans la bdd c'est stocké dans ezcontentobject_attribute.
 - cocher "Content location"
 - ajouter dans "Allowed content types" le content type concerné
 
-Note : Dans la bdd c'est stocké dans ezcontentobject_attribute. 
+#### 5. Ajouter un formulaire d'inscription
+- cliquer sur l'icône d'engrenage
+- cliquer sur "Roles" puis "Anonymous"
+- cliquer sur "+ Add" et choisir "User/Register"
 
-#### 5. Complément
-**Prévisualiser l'affichage d'un content sur le site**      
+Le chemin <yourdomain>/register affiche maintenant un formulaire d'inscription.      
+Dans la config. on peut ajouter le template du formulaire ainsi que celui de la page de confirmation.     
+
+Les utilisateurs inscrits sont visibles dans l'interface :    
+- cliquer sur l'icône d'engrenage
+- choisir le menu "Users", ouvrir l'icône affichant "Content tree"
+- ouvrir Users -> Guest accounts
+
+#### 6. Gérer les permissions utilisateurs
+**Nouveau groupe utilisateur**     
+- cliquer sur l'icône d'engrenage
+- cliquer sur "Users" puis "+ Create user"
+- choisir "User group", nommer le groupe et le publier    
+
+**Nouveau rôle avec ses droits**    
+- cliquer sur l'icône d'engrenage
+- cliquer sur "Roles" puis "+ Create" de l'onglet Policies
+- nommer le rôle et le sauvegarder
+- définir pour le rôle un droit et ses limitations (si besoin) en cliquant sur "+ Add"
+
+**Assignation d'un rôle à un groupe utilisateur**       
+- icône d'engrenage -> Roles -> Rôle choisi -> Assignments
+- cliquer sur "Assign to Users/Groups"
+- cliquer sur "Select User groups", choisir le groupe et sauvegarder
+
+#### 7. Complément
+**Prévisualiser l'affichage d'un contenu sur le site**      
 Aller dans le menu "Content Structure", choisir un contenu et cliquer sur "Preview".    
 
 **Trouver l'url de son contenu**     
@@ -246,10 +286,19 @@ Aller dans le menu "Content Structure", choisir le contenu et cliquer sur URL.
 
 **Autoriser la lecture des medias**     
 Cela permet d'afficher les images sur le site.      
-- cliquer sur l'icône d'engrenage du panneau d'admin
+- cliquer sur l'icône d'engrenage
 - cliquer sur "Roles" puis "Anonymous"
 - éditer la ligne Content Read
 - dans Section ajouter "Media"    
+
+**Afficher les textes de l'admin selon la langue utilisateur**     
+Dans la config ibexa :       
+```
+ibexa:
+    ui:
+        translations:
+            enabled: true
+``` 
 </details>
 
 <details>
@@ -276,7 +325,7 @@ On crée une classe (ex. RideQueryType) dans /src/QueryType et on ajoute sa conf
 #### 4. Gérer les images
 On utilise le fichier config/packages/image_variations.yaml pour ajouter une configuration d'images.      
 Puis on applique la configuration dans un template Twig en l'appelant dans parameters.     
-Ex. côté Twig: 
+Ex. côté Twig : 
 ```
 {{ ibexa_render_field(content, 'photo', {
     'parameters': {
