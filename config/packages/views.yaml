@@ -10,7 +10,7 @@ ibexa:
                     home_page:
                         # appelle la méthode pagingQueryAction du contrôleur ibexa_query qui récupère le contenu avec une pagination
                         controller: ibexa_query::pagingQueryAction
-                        # template affichant le content
+                        # template affichant le contenu
                         template: full/home_page.html.twig
                         # récupère le contenu dont l'id de location est 2
                         match:
@@ -20,7 +20,7 @@ ibexa:
                             query:
                                 query_type: Ride
                                 limit: 2
-                                # variables rides accessible côté template
+                                # variable rides accessible côté template
                                 assign_results_to: rides
                     ride:
                         # appelle la méthode viewRideWithLandmarksAction du contrôleur RideController que l'on a crée
@@ -29,7 +29,7 @@ ibexa:
                         match:
                             # récupère le contenu dont le type est ride
                             Identifier\ContentType: ride
-                # full pour les élements d'une page
+                # line pour les élements d'une page
                 line:
                     ride:
                         template: line/rides.html.twig
